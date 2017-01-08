@@ -10,6 +10,15 @@ function start(){
       res.redirect(instaAPI.get_auth_url(config.client_id, config.redirect_uri));
     });
 
+    // Step Two: Receive the redirect from Instagram
+    app.get('/handleauth', function (req, res) {
+      if(req.query.error!==undefined){
+        res.end(req.query.code);
+      } else{
+        res.end('error occured');
+      }
+    });
+
     app.listen('4000', function () {
       console.log('server started and running');
     });
