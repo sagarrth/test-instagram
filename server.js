@@ -13,9 +13,16 @@ function start(){
     // Step Two: Receive the redirect from Instagram
     app.get('/handleauth', function (req, res) {
       if(req.query.error!==undefined){
-        res.end(req.query.code);
+        // Step Three: Request the access_token
+        instaAPI.get_access_token(config.client_id, config.client_secret, config.redirect_uri, req.query.code, function (err, data) {
+          if(err) {
+            res.end('error accessing token');
+          } else{
+              res.end(data.access_token);
+          }
+        });
       } else{
-        res.end('error occured');
+        res.end('error receiving code parameter from instagram API');
       }
     });
 
